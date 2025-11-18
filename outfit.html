@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Generated Outfit — Digital Wardrobe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app">
+
+  <aside class="sidebar">
+    <div class="logo">Digital<span class="accent">Wardrobe</span></div>
+    <nav class="nav-menu">
+      <a class="nav-link" href="dashboard.html">Dashboard</a>
+      <a class="nav-link" href="add.html">Add clothing</a>
+      <a class="nav-link active" href="outfit.html">Generate Outfit</a>
+    </nav>
+  </aside>
+
+  <main class="content center-card">
+    <div class="card outfit-display">
+      <h2>Your Outfit</h2>
+
+      <div id="outfitContainer" class="outfit-grid">
+        <!-- injected by script.js -->
+      </div>
+
+      <div class="row" style="margin-top:14px">
+        <button id="shuffleBtn" class="btn outline">Shuffle Again</button>
+        <a href="dashboard.html" class="btn ghost">Back</a>
+      </div>
+    </div>
+  </main>
+
+<script src="script.js"></script>
+<script>
+  if (!app.getCurrentUser()) location.href = 'index.html';
+
+  function showCombo() {
+    const combo = JSON.parse(localStorage.getItem('dw_last_combo') || 'null');
+    const box = document.getElementById('outfitContainer');
+    box.innerHTML = '';
+    if (!combo) {
+      box.innerHTML = '<p class="muted">No outfit generated yet. Go to Dashboard → Generate Outfit.</p>';
+      return;
+    }
+    // show each part if available
+    ['Shirt','Pant','Shoes','Jacket','Accessory'].forEach(cat => {
+      if (combo[cat]) {
+        const el = document.createElement('div');
+        el.className = 'outfit-item';
+        el.innerHTML = `<img src="${combo[cat].image}" alt="${cat}"><div class="meta">${cat}</div>`;
+        box.appendChild(el);
+      }
+    });
+  }
+
+  document.getElementById('shuffleBtn').addEventListener('click', () => {
+    // regenerate and store
+    const combo = app.generateOutfit();
+    if (!combo) { alert('Need at least Shirt, Pant and Shoes'); return; }
+    localStorage.setItem('dw_last_combo', JSON.stringify(combo));
+    showCombo();
+  });
+
+  showCombo();
+</script>
+</body>
+</html>

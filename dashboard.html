@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard — Digital Wardrobe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app">
+
+  <aside class="sidebar">
+    <div class="logo">Digital<span class="accent">Wardrobe</span></div>
+    <nav class="nav-menu">
+      <a class="nav-link active" href="dashboard.html">Dashboard</a>
+      <a class="nav-link" href="add.html">Add clothing</a>
+      <a class="nav-link" href="outfit.html">Generate Outfit</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="avatar"></div>
+        <div class="user-meta">
+          <div id="userNameDisplay">User</div>
+          <div class="muted small">Local account</div>
+        </div>
+      </div>
+
+      <button id="logout" class="btn ghost fullwidth">Logout</button>
+    </div>
+  </aside>
+
+  <main class="content">
+    <header class="content-header">
+      <h1>My Wardrobe</h1>
+      <div class="controls">
+        <a href="add.html" class="btn small">+ Add</a>
+        <button id="generateBtn" class="btn outline">Generate Outfit</button>
+      </div>
+    </header>
+
+    <section id="gridWrap" class="grid-wrap">
+      <div id="emptyNotice" class="empty">No clothes added yet.</div>
+      <div id="itemsGrid" class="items-grid"></div>
+    </section>
+  </main>
+
+<script src="script.js"></script>
+<script>
+  // Page-specific wiring
+  if (!app.getCurrentUser()) location.href = 'index.html';
+  document.getElementById('userNameDisplay').textContent = app.getCurrentUser() || 'User';
+  document.getElementById('logout').addEventListener('click', () => { app.logout(); location.href='index.html'; });
+
+  // render items on load (function in script.js)
+  app.renderDashboard();
+
+  document.getElementById('generateBtn').addEventListener('click', () => {
+    const combo = app.generateOutfit();
+    if (!combo) { alert('Need at least one Shirt, Pant and Shoes to generate an outfit.'); return; }
+    // store combo in localStorage for outfit.html to display
+    localStorage.setItem('dw_last_combo', JSON.stringify(combo));
+    location.href = 'outfit.html';
+  });
+</script>
+</body>
+</html>

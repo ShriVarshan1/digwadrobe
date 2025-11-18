@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign up — Digital Wardrobe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app">
+
+  <aside class="sidebar">
+    <div class="logo">Digital<span class="accent">Wardrobe</span></div>
+  </aside>
+
+  <main class="auth-main center-card">
+    <div class="card auth-card">
+      <h2>Create account</h2>
+      <p class="muted">Simple, local signup (stored in browser)</p>
+
+      <label class="field">
+        <span>Username</span>
+        <input id="su-username" type="text" placeholder="choose a username">
+      </label>
+
+      <label class="field">
+        <span>Password</span>
+        <input id="su-password" type="password" placeholder="choose a password">
+      </label>
+
+      <label class="field">
+        <span>Confirm Password</span>
+        <input id="su-password2" type="password" placeholder="confirm password">
+      </label>
+
+      <div class="row">
+        <button id="signupBtn" class="btn primary">Sign up</button>
+        <a href="index.html" class="btn ghost">Login</a>
+      </div>
+
+      <p id="signupError" class="error" style="display:none"></p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('signupBtn').addEventListener('click', () => {
+      const u = document.getElementById('su-username').value.trim();
+      const p = document.getElementById('su-password').value;
+      const p2 = document.getElementById('su-password2').value;
+      const err = document.getElementById('signupError');
+      if (!u || !p) { err.textContent = 'Enter username and password'; err.style.display='block'; return; }
+      if (p !== p2) { err.textContent = 'Passwords do not match'; err.style.display='block'; return; }
+      const ok = app.signup(u, p);
+      if (!ok) { err.textContent = 'Username already exists'; err.style.display='block'; return; }
+      location.href = 'dashboard.html';
+    });
+
+    if (app.getCurrentUser()) location.href = 'dashboard.html';
+  </script>
+</body>
+</html>

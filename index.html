@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login — Digital Wardrobe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app">
+
+  <aside class="sidebar">
+    <div class="logo">Digital<span class="accent">Wardrobe</span></div>
+  </aside>
+
+  <main class="auth-main center-card">
+    <div class="card auth-card">
+      <h2>Welcome back</h2>
+      <p class="muted">Login to your Digital Wardrobe</p>
+
+      <label class="field">
+        <span>Username</span>
+        <input id="login-username" type="text" placeholder="username">
+      </label>
+
+      <label class="field">
+        <span>Password</span>
+        <input id="login-password" type="password" placeholder="password">
+      </label>
+
+      <div class="row">
+        <button id="loginBtn" class="btn primary">Login</button>
+        <a href="signup.html" class="btn ghost">Sign up</a>
+      </div>
+
+      <p id="loginError" class="error" style="display:none"></p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    // Page-specific login wiring
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const u = document.getElementById('login-username').value.trim();
+      const p = document.getElementById('login-password').value;
+      const ok = app.login(u, p);
+      const err = document.getElementById('loginError');
+      if (!ok) { err.textContent = 'Invalid username or password.'; err.style.display = 'block'; return; }
+      location.href = 'dashboard.html';
+    });
+
+    // If already logged-in -> go to dashboard
+    if (app.getCurrentUser()) location.href = 'dashboard.html';
+  </script>
+</body>
+</html>

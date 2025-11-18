@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Add Clothing — Digital Wardrobe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app">
+
+  <aside class="sidebar">
+    <div class="logo">Digital<span class="accent">Wardrobe</span></div>
+    <nav class="nav-menu">
+      <a class="nav-link" href="dashboard.html">Dashboard</a>
+      <a class="nav-link active" href="add.html">Add clothing</a>
+      <a class="nav-link" href="outfit.html">Generate Outfit</a>
+    </nav>
+  </aside>
+
+  <main class="content center-card">
+    <div class="card add-card">
+      <h2>Add New Clothing</h2>
+
+      <label class="field file-field">
+        <span>Upload image</span>
+        <input id="imageInput" type="file" accept="image/*">
+      </label>
+
+      <label class="field">
+        <span>Category</span>
+        <select id="category" class="select">
+          <option value="">-- Select category --</option>
+          <option value="Shirt">Shirt</option>
+          <option value="Pant">Pant</option>
+          <option value="Shoes">Shoes</option>
+          <option value="Jacket">Jacket</option>
+          <option value="Accessory">Accessory</option>
+        </select>
+      </label>
+
+      <div id="previewWrap" class="preview-wrap" style="display:none">
+        <img id="previewImg" alt="preview">
+      </div>
+
+      <div class="row">
+        <button id="saveBtn" class="btn primary">Save</button>
+        <a href="dashboard.html" class="btn ghost">Back</a>
+      </div>
+
+      <p id="addError" class="error" style="display:none"></p>
+    </div>
+  </main>
+
+<script src="script.js"></script>
+<script>
+  if (!app.getCurrentUser()) location.href = 'index.html';
+
+  // preview wiring (script.js also listens)
+  const imageInput = document.getElementById('imageInput');
+  imageInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      document.getElementById('previewImg').src = reader.result;
+      document.getElementById('previewWrap').style.display = 'block';
+    }
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById('saveBtn').addEventListener('click', () => {
+    app.saveClothFromAddPage();
+  });
+</script>
+</body>
+</html>
